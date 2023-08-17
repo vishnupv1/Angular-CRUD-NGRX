@@ -61,9 +61,7 @@ const verifyAdmin = async (req, res) => {
     if (adminData && adminData.isAdmin === true) {
       const isMatch = await bcrypt.compare(password, adminData.password)
       if (isMatch) {
-        const options = {
-          expiresIn: '1h'
-        };
+        const options = {expiresIn: '1h'};
         const token = jwt.sign(req.body, 'mysecretkey', options);
         res.json({ adminToken: token })
       } else {
