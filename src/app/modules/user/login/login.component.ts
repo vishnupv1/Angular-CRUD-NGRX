@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from "../../../services/auth.service";
+import { CommonServiceService } from 'src/app/services/common-service.service';
 
 @Component({
   selector: 'app-login',
@@ -9,13 +10,15 @@ import { AuthService } from "../../../services/auth.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  
-  constructor(private fb: FormBuilder, private authService: AuthService, private router:Router) { }
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
   submit: boolean = false
-  emailMessage!:string
-  passMessage!:string
-  user!:string
+  emailMessage!: string
+  passMessage!: string
+  user!: string
+
+  
 
   loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
@@ -24,7 +27,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.submit = true
-    if(this.loginForm.value.email){
+    if (this.loginForm.value.email) {
       this.userLogin()
     }
   }
@@ -32,20 +35,20 @@ export class LoginComponent {
   userLogin() {
     this.authService.getUser(this.loginForm.value).subscribe(
       (response: any) => {
-        if(response.passMatch){
+        if (response.passMatch) {
           this.passMessage = response.passMatch
-        }else if(response.emailMatch){
+        } else if (response.emailMatch) {
           this.emailMessage = response.emailMatch
-        }else{
+        } else {
           this.user = response.user
           localStorage.setItem('userToken', response.userToken);
-          localStorage.setItem('userId',response.userId)
-          this.router.navigate(['/']) 
+          localStorage.setItem('userId', response.userId)
+          this.router.navigate(['/'])
         }
-        setTimeout(()=>{
-          this.passMessage = "" 
-          this.emailMessage = "" ;
-        },2000)
+        setTimeout(() => {
+          this.passMessage = ""
+          this.emailMessage = "";
+        }, 2000)
       }, (error) => {
         console.log(error)
       }

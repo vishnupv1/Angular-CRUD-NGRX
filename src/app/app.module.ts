@@ -18,6 +18,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { profileReducer } from './modules/store/user.reducer';
 import { userEffects } from './modules/store/user.effects';
 import { AuthService } from './services/auth.service';
+import { CommonServiceService } from './services/common-service.service';
 
 @NgModule({
   declarations: [
@@ -35,10 +36,10 @@ import { AuthService } from './services/auth.service';
     FormsModule,
     ReactiveFormsModule,
     EffectsModule.forRoot([userEffects]),
-    StoreModule.forRoot({ profile : profileReducer }),
+    StoreModule.forRoot({ profile: profileReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, CommonServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
